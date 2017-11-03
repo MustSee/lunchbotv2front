@@ -1,0 +1,95 @@
+#map {
+    float: left;
+  width: 50%;
+  height: 100vh;
+}
+
+#secondSide {
+    float:right;
+    width: 50%;
+    height: 100vh;
+    margin: auto;
+    background-color: #9da0a4;
+    display: flex;
+    align-items: center;
+}
+
+.infowindow {
+    display: flex;
+    width: 50%;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid black;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+}
+
+h2:hover {
+     color:red;
+     cursor : pointer;
+ }
+
+.marker {
+    color : orangered;
+    width : 20px;
+    height: 20px;
+    background-color: #9dae00;
+    border-radius: 50%;
+    cursor : pointer;
+    transition : width 0.5s, height 0.5s, color 0.5s;
+    opacity: 0.5;
+
+    /* Pour centrer la div. Par rapport à la width et à la height */
+    position: absolute;
+    left : -10px;
+    top : -10px;
+
+}
+
+/*.marker:hover {*/
+    /*width: 30px;*/
+    /*height: 30px;*/
+    /*background-color: #3a33d1;*/
+/*}*/
+
+.marker-active {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    color : white;
+    width : 70px;
+    height: 50px;
+    background-color: #2b81af;
+    border-radius: 30%;
+    cursor : pointer;
+    transition : width 0.5s, height 0.5s, background-color 0.5s;
+    z-index:2;
+    opacity: 0.9;
+
+    /* Pour centrer la div. Par rapport à la width et à la height */
+    position: absolute;
+    left : -35px;
+    top : -25px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+form label {
+    padding: 10px;
+    margin-left: 20px;
+}
+
+.flashMessage {
+    background-color: greenyellow;
+    line-height: 1.5;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
