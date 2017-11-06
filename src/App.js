@@ -16,10 +16,11 @@ class App extends Component {
 		this.state = {
 			places: [],
 			selectedPlaceIndex: null,
-			showAddPlaceForm: true
+			showForm: true
 		};
 		this.handleClickOnPlace = this.handleClickOnPlace.bind(this);
-		this.handleShowAddPlaceForm = this.handleShowAddPlaceForm.bind(this);
+		this.handleShowForm = this.handleShowForm.bind(this);
+		this.handleReRender = this.handleReRender.bind(this);
 	}
 
 	componentDidMount() {
@@ -35,10 +36,17 @@ class App extends Component {
 		})
 	}
 
-	handleShowAddPlaceForm(showAddPlaceForm) {
+	handleShowForm(showForm) {
 		this.setState({
-			showAddPlaceForm: showAddPlaceForm
+			showForm: showForm
 		});
+	}
+
+	handleReRender() {
+		let placesUrl = paths.api + '/places';
+		axios.get(placesUrl).then(res => this.setState({
+			places: res
+		}));
 	}
 
 	render() {
@@ -54,7 +62,7 @@ class App extends Component {
 				</div>
 				<div id="search">
 					{
-						this.state.showAddPlaceForm ? <Form/> : <FlashMessage/>
+						this.state.showForm ? <Form showForm={this.handleShowForm} reRender={this.handleReRender}/> : <FlashMessage/>
 					}
 					{
 						this.state.selectedPlaceIndex !== null ?

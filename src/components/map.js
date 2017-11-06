@@ -11,7 +11,9 @@ export default class Map extends Component {
 		this.handleClickOnPlace = this.handleClickOnPlace.bind(this);
 	}
 
+	// TODO : how to access the selectedPlaceIndex
 	handleClickOnPlace(selectedPlaceIndex) {
+		console.log(selectedPlaceIndex.target);
 		this.props.clickOnPlace(selectedPlaceIndex);
 	}
 

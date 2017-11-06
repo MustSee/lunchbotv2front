@@ -8,7 +8,7 @@ export default class Marker extends React.Component {
 	}
 
 	handleClick(e) {
-		this.props.onClickPlace(0);
+		this.props.onClickPlace(e);
 	}
 
 	render() {
@@ -20,7 +20,7 @@ export default class Marker extends React.Component {
 				</div>
 				:
 				<div className="marker" onClick={this.handleClick}>
-
+					{this.props.place ? this.props.place.name : <span></span>}
 				</div>
 		)
 	}

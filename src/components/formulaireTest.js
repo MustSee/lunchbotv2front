@@ -28,6 +28,10 @@ export default class Form extends React.Component {
 	handleSubmit(e) {
 		e.preventDefault();
 		this.validateFields(e.target);
+
+		// TODO: Find a solution. On first click, this.state.isFormValid is false ! Asynchronism...
+		console.log(this.state.isFormValid);
+
 		if (this.state.isFormValid) {
 			this.submitForm(e.target.name.value, e.target.adress.value, e.target.city.value);
 		}
@@ -79,6 +83,7 @@ export default class Form extends React.Component {
 			formErrors.adress = 'L\'adresse doit contenir plus de trois caractères';
 		}
 
+
 		this.setState({
 			formErrors : formErrors,
 			isFormValid : this.isFormValid(formErrors)
@@ -112,7 +117,12 @@ export default class Form extends React.Component {
 				console.log(place);
 
 				axios.post(paths.api + "/places", place)
-					.then(res => console.log(res))
+					.then(res => {
+						if(res.status === 201) {
+							this.props.showForm(false);
+							this.props.reRender();
+						}
+					})
 					.catch(error => console.log(error));
 
 
