@@ -2,28 +2,26 @@ import React from "react";
 
 export default class Marker extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-    }
+	constructor(props) {
+		super(props);
+		this.handleClick = this.handleClick.bind(this);
+	}
 
-    handleClick(e) {
-        console.log(e);
-        this.props.onClickSpot(this.props.spot);
-    }
+	handleClick(e) {
+		this.props.onClickPlace(0);
+	}
 
-    render() {
+	render() {
 
-        return (
-            this.props.isActive ?
-            <div className="marker-active" onClick={this.handleClick}>
-                {
-                    this.props.spot ? this.props.spot.denomination : <span></span>}
-            </div>
-                :
-                <div className="marker" onClick={this.handleClick}>
+		return (
+			this.props.isActive ?
+				<div className="marker-active" onClick={this.handleClick}>
+					{this.props.place ? this.props.place.name : <span></span>}
+				</div>
+				:
+				<div className="marker" onClick={this.handleClick}>
 
-                </div>
-        )
-    }
+				</div>
+		)
+	}
 }

@@ -65,9 +65,9 @@ export default class Formulaire extends React.Component {
         let reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function() {
-            let pic64 = reader.result;
-            let pic64Json = JSON.stringify(pic64);
-            console.log(pic64Json);
+            //let pic64 = reader.result;
+            //let pic64Json = JSON.stringify(pic64);
+            //console.log(pic64Json);
 
             //////
 

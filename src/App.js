@@ -1,109 +1,70 @@
-import React, { Component } from 'react';
-import './App.css';
-import Map from './components/map';
-import InfoWindow from './components/infowindow';
-import Formulaire from './components/formulaire';
-import FlashMessage from './components/flashMessage';
-import path from './settings/api-url-path.json';
+import React, {Component} from 'react';
 import axios from 'axios';
-
+import './App.css';
+import paths from './settings/paths.json';
+import FlashMessage from './components/flashMessage';
 import Form from './components/formulaireTest';
+import InfoWindow from './components/infowindow';
+import Map from './components/map';
+
 
 
 class App extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            spots : [],
-            addedSpots : [],
-            spotInfo : null,
-            showForm : true
-        };
-        this.handleClickOnSpot = this.handleClickOnSpot.bind(this);
-        this.handleShowForm = this.handleShowForm.bind(this);
-    }
+	constructor(props) {
+		super(props);
+		this.state = {
+			places: [],
+			selectedPlaceIndex: null,
+			showAddPlaceForm: true
+		};
+		this.handleClickOnPlace = this.handleClickOnPlace.bind(this);
+		this.handleShowAddPlaceForm = this.handleShowAddPlaceForm.bind(this);
+	}
 
-    componentDidMount() {
-        let fullUrl = path.url + '/all_places_to_eat';
-        axios.get(fullUrl).then(res => this.setState({
-            spots : res
-        }));
+	componentDidMount() {
+		let placesUrl = paths.api + '/places';
+		axios.get(placesUrl).then(res => this.setState({
+			places: res
+		}));
+	}
 
-        let fullUrlAddedSpots = path.url + '/all_added_spots';
-        axios.get(fullUrlAddedSpots).then(res => this.setState({
-            addedSpots : res
-        }));
+	handleClickOnPlace(res) {
+		this.setState({
+			selectedPlaceIndex: res
+		})
+	}
 
-        // TESTING
+	handleShowAddPlaceForm(showAddPlaceForm) {
+		this.setState({
+			showAddPlaceForm: showAddPlaceForm
+		});
+	}
 
-        let lolo = {
-            name : "thomas",
-            firsname : "sypniewski"
-        };
+	render() {
 
-        lolo = JSON.stringify(lolo);
-
-        axios.post(path.url + '/test/cacao', lolo
-        ).then(res => console.log(res));
-
-        //// error :  Response for preflight has invalid HTTP status code 404
-        //axios({
-        //    method : 'post',
-        //    url : path.url + '/testPostParamsAxios',
-        //    data: {
-        //        firstName: 'Fred',
-        //        lastName: 'Flintstone'
-        //    }
-        //}).then(res => console.log(res));
-
-    }
-
-    handleClickOnSpot(res) {
-        this.setState({
-            spotInfo : res
-        })
-    }
-
-    handleShowForm(data) {
-        this.setState({
-            showForm : data
-        });
-    }
-
-  render() {
-
-    return (
-        <div>
-            <div id="map" >
-                <Map
-                    spots={this.state.spots}
-                    addedSpots={this.state.addedSpots}
-                    clickOnSpot={this.handleClickOnSpot}
-                />
-            </div>
-            <div id="secondSide">
-                {
-                    //this.state.showForm ?
-                    //<Formulaire showForm={this.handleShowForm}/>
-                    //: <FlashMessage />
-
-                }
-
-                {
-                    //this.state.spotInfo ?
-                    //<InfoWindow spot={this.state.spotInfo}/>
-                    //: null
-                }
-
-                <Form />
-
-            </div>
-
-        </div>
-
-    );
-  }
+		return (
+			<div>
+				<div id="map">
+					<Map
+						places={this.state.places}
+						selectedPlaceIndex={this.state.selectedPlaceIndex}
+						clickOnPlace={this.handleClickOnPlace}
+					/>
+				</div>
+				<div id="search">
+					{
+						this.state.showAddPlaceForm ? <Form/> : <FlashMessage/>
+					}
+					{
+						this.state.selectedPlaceIndex !== null ?
+							<InfoWindow place={this.state.places[this.state.selectedPlaceIndex]}/>
+							: null
+					}
+				</div>
+			</div>
+		);
+	}
 }
 
 export default App;
