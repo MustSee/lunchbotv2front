@@ -16,15 +16,13 @@ class App extends Component {
 		super(props);
 		this.state = {
 			places: [],
-			selectedPlace: null,
-			showForm: false,
-			showInfoWindow : false
+			isActive: '',
+			showForm: false
 		};
-		this.handleClickOnPlace = this.handleClickOnPlace.bind(this);
 		this.handleShowForm = this.handleShowForm.bind(this);
 		this.handleReRender = this.handleReRender.bind(this);
-		this.showInfoWindow = this.showInfoWindow.bind(this);
 		this.handlePlacesChanged = this.handlePlacesChanged.bind(this);
+		this.handleMarkerClicked = this.handleMarkerClicked.bind(this);
 	}
 
 	componentDidMount() {
@@ -34,11 +32,6 @@ class App extends Component {
 		}));
 	}
 
-	handleClickOnPlace(res) {
-		this.setState({
-			selectedPlace: res
-		})
-	}
 
 	handleShowForm(showForm) {
 		this.setState({
@@ -53,12 +46,6 @@ class App extends Component {
 		}));
 	}
 
-	showInfoWindow(res) {
-		this.setState({
-			showForm : res
-		})
-	}
-
 	handlePlacesChanged(places, search) {
 		console.log(places, search);
 		this.setState({
@@ -66,37 +53,31 @@ class App extends Component {
 		})
 	}
 
+	handleMarkerClicked(e) {
+		console.log(e);
+		this.setState({
+			isActive : e
+		})
+	}
+
 	render() {
-
-		if(this.state.showForm) {
-			console.log('render App with form', this.handleShowForm, this.handleReRender);
-		}
-		else {
-			console.log('render App no form');
-		}
-
 
 		return (
 			<div>
 				<div id="map">
 					<Map
 						places={this.state.places}
-						selectedPlace={this.state.selectedPlaceIndex}
-						clickOnPlace={this.handleClickOnPlace}
-						showInfoWindow={this.showInfoWindow}
+						markerClicked={this.handleMarkerClicked}
+						active={this.state.isActive}
 					/>
 				</div>
 				<div id="search">
 					<SearchBar onPlacesChange={this.handlePlacesChanged}/>
 					{
-						this.state.showForm ? <Form test="12" showForm={this.handleShowForm} reRender={this.handleReRender}/> : <span></span>
+						this.state.showForm ? <Form showForm={this.handleShowForm} reRender={this.handleReRender}/> : <span></span>
 					}
 					{
-						this.state.showInfoWindow ?
-							this.state.selectedPlace !== null ?
-								<InfoWindow place={this.state.selectedPlace} showInfoWindow={this.showInfoWindow}/>
-								: null
-						: null
+						this.state.isActive !== '' ? <InfoWindow active={this.state.isActive}/> : <span></span>
 					}
 				</div>
 			</div>

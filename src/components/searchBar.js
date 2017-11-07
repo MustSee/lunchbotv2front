@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import paths from './../settings/paths.json';
-import Form from './../components/formulaireTest';
 
 
 
@@ -28,7 +27,7 @@ export default class SearchBar extends React.Component {
                 .then(res => {
                     this.setState({
                         places : res.data.places
-                    }, () => {
+                    }, () => {  // we do callBack after the setState to retrieve some informations
                         this.props.onPlacesChange(res.data.places, searchValue);
                     })
                 });
@@ -38,7 +37,6 @@ export default class SearchBar extends React.Component {
             });
         }
     }
-
 
 
     handleKeyPress(event) {
@@ -90,7 +88,7 @@ export default class SearchBar extends React.Component {
                                     )
                                 })
                             }
-                        </ul>:<span></span>
+                        </ul> : <span></span>
                 }
 
             </div>

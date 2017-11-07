@@ -2,27 +2,43 @@ import React from "react";
 
 export default class Marker extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.handleClick = this.handleClick.bind(this);
-	}
+    constructor(props) {
+        super(props);
+        this.handleClickOnMarker = this.handleClickOnMarker.bind(this);
 
-	handleClick(e) {
-		this.props.onClickPlace(e.target.innerHTML);
-		this.props.showInfoWindow(true);
-	}
+    }
 
-	render() {
+    handleClickOnMarker(e) {
+        console.log(this.props.place);
+        this.props.onClickEvent(this.props.place);
+    }
 
-		return (
-			this.props.isActive ?
-				<div className="marker-active" onClick={this.handleClick}>
-					{this.props.place ? this.props.place.name : <span></span>}
-				</div>
-				:
-				<div className="marker" onClick={this.handleClick}>
-					{this.props.place ? this.props.place.name : <span></span>}
-				</div>
-		)
-	}
+    render() {
+
+        return (
+
+            this.props.isActive ?
+
+
+                <div className="marker-active"
+                     onClick={this.handleClickOnMarker}
+                >
+                    {this.props.place ? this.props.place.name : <span></span>}
+                </div>
+                :
+                <div className="marker"
+                     onClick={this.handleClickOnMarker}>
+                    {this.props.place ? this.props.place.name : <span></span>}
+                </div>
+
+            //this.props.isActive ?
+            //	<div className="marker-active" onClick={this.handleClickOnMarker(this.props.place)} >
+            //		{this.props.place ? this.props.place.name : <span></span>}
+            //	</div>
+            //	:
+            //	<div className="marker" onClick={this.handleClickOnMarker(this.props.place)} >
+            //		{this.props.place ? this.props.place.name : <span></span>}
+            //	</div>
+        )
+    }
 }

@@ -8,29 +8,17 @@ const MainMarker = ({text}) => <h2>{text}</h2>;
 export default class Map extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			isActive : null
-		};
-		this.handleClickOnPlace = this.handleClickOnPlace.bind(this);
+		this.clickEvent = this.clickEvent.bind(this);
 	}
 
-	// TODO : how to access the selectedPlaceIndex
-	handleClickOnPlace(res) {
-		this.props.clickOnPlace(res);
-		console.log(res);
-		this.setState({
-			isActive : res
-		})
-	}
-
-	showInfoWindow(res) {
-		console.log(res);
-		this.props.showInfoWindow(res);
+	clickEvent(e){
+		console.log(e);
+		this.props.markerClicked(e);
 	}
 
 	render() {
 
-		console.log(this.state.isActive);
+		let active = this.props.active;
 
 		const markers = [];
 
@@ -41,13 +29,8 @@ export default class Map extends Component {
 					lat={element.coordsLatitude}
 					lng={element.coordsLongitude}
 					place={element}
-					isActive={
-                    this.state.isActive ?
-                    element === this.state.isActive ? true : false
-                    : false
-                    }
-					onClickPlace={this.handleClickOnPlace}
-					showInfoWindow={this.showInfoWindow}
+					onClickEvent={this.clickEvent}
+					isActive={active === element ? true : false}
 				/>
 			);
 		}) : <span>Pas de données</span>;

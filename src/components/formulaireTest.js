@@ -28,7 +28,10 @@ export default class Form extends React.Component {
 
 	handleSubmit(e) {
 		e.preventDefault();
+		// If we don't instantiate the const, we loose the value
 		const target = e.target;
+		// validatefields return now a promise
+		// We exploit it with .then and .catch
 		this.validateFields(target).then(res => {
 			this.submitForm(target.name.value, target.adress.value, target.city.value);
 		}).catch(err => console.log(err));
@@ -66,8 +69,9 @@ export default class Form extends React.Component {
 				this.setState({
 					formErrors : formErrors,
 					isFormValid : isValid
-				}, () => {
+				}, () => {				// We make a callback at the end of the setState
 					if(isValid) {
+						// resolve et reject sont deux fonctions
 						resolve();
 					}
 					else {
