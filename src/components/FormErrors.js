@@ -7,7 +7,7 @@ export default function FormErrors(props) {
                 Object.keys(props.FormErrors).map((fieldName, i) => {
                     if (props.FormErrors[fieldName].length > 0){
                         return (
-                            <span key={i}>{props.FormErrors[fieldName]}</span>
+                            <span key={i}>{props.FormErrors[fieldName]}.<br/><br/></span>
                         )
                     } else {
                         return "";

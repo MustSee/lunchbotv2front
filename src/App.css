@@ -11,7 +11,7 @@
     margin: auto;
     background-color: #9da0a4;
     display: flex;
-    align-items: center;
+    flex-direction: column;
 }
 
 .infowindow {
@@ -74,17 +74,6 @@ h2:hover {
     top : -25px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-form label {
-    padding: 10px;
-    margin-left: 20px;
-}
-
 .flashMessage {
     background-color: greenyellow;
     line-height: 1.5;
@@ -92,4 +81,39 @@ form label {
     margin: 10px;
     padding: 10px;
     border-radius: 5px;
+}
+
+.searchBar {
+    width : 400px;
+    height: 600px;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.searchBar input {
+    width: inherit;
+    font-size : large;
+}
+
+.searchBar ul {
+    box-sizing: border-box;
+    width: inherit;
+    list-style: none;
+    margin: 10px 0 5px 0;
+    padding: 0;
+}
+
+.searchBar ul li {
+    padding: 10px 5px 10px 50px;
+    border-radius: 5px;
+}
+
+.searchBar ul li:hover {
+    background-color: white;
+    cursor : pointer;
+}
+
+.closeInfoWindow {
+    background-color: #a8aaaf;
 }

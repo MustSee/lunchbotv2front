@@ -7,13 +7,14 @@ import paths from './../settings/paths.json';
 export default class Form extends React.Component {
 
 	constructor(props) {
+		console.log('Form constructor', props);
 		super(props);
 		this.state = {
 			name: "",
 			adress: "",
-			city: "",
+			city: "Boulogne-Billancourt	",
 			// Validation
-			formErrors: {name: " ", adress: " ", city: " "},
+			formErrors: {name: "", adress: "", city: "", noResults: ""},
 			isFormValid: false
 		};
 		this.handleUserInput = this.handleUserInput.bind(this);
@@ -27,67 +28,56 @@ export default class Form extends React.Component {
 
 	handleSubmit(e) {
 		e.preventDefault();
-		this.validateFields(e.target);
+		const target = e.target;
+		this.validateFields(target).then(res => {
+			this.submitForm(target.name.value, target.adress.value, target.city.value);
+		}).catch(err => console.log(err));
 
-		// TODO: Find a solution. On first click, this.state.isFormValid is false ! Asynchronism...
-		console.log(this.state.isFormValid);
-
-		if (this.state.isFormValid) {
-			this.submitForm(e.target.name.value, e.target.adress.value, e.target.city.value);
-		}
 	}
 
 	validateFields(target) {
-		let formErrors = {};
 
-		// Check if name length is greater than 3
-		if (target.name.value.length >= 3) {
-			formErrors.name = '';
-		} else {
-			formErrors.name = 'Le nom de l\'endroit doit contenir plus de trois caractères';
-		}
+		return new Promise(
+			(resolve, reject) => {
+				let formErrors = {};
 
-		// Check if the city exists
-		if (target.city.value.length < 2) {
-			formErrors.city = 'Le nom de la ville doit contenir plus de trois caractères';
-		} else {
-			formErrors.city = '';
-		}
+				// Check if name length is greater than 3
+				if (target.name.value.length >= 3) {
+					formErrors.name = '';
+				} else {
+					formErrors.name = 'Le nom de l\'endroit doit contenir plus de trois caractères';
+				}
 
-		// axios.get("https://geo.api.gouv.fr/communes?nom=" + city).then(res => {
-		// 	// If no match found
-		// 	if (res.data.length === 0) {
-		// 		fieldValidationErrors.town = "is invalid";
-		// 		// If some match
-		// 	} else if (res.data.length >= 1) {
-		// 		res.data.forEach((element) => {
-		// 			// We stop case sensitivity
-		// 			if (element.nom.toUpperCase() === town.toUpperCase()) {
-		// 				townValid = true;
-		// 				fieldValidationErrors.town = "";
-		// 				console.log('match');
-		// 				this.setState({
-		// 					townValid: townValid
-		// 				});
-		// 			}
-		// 		})
-		// 	}
-		// }).catch(error => {
-		// 	console.log(error);
-		// });
+				// Check if the city exists
+				if (target.city.value.length < 2) {
+					formErrors.city = 'Le nom de la ville doit contenir plus de trois caractères';
+				} else {
+					formErrors.city = '';
+				}
 
-		// Check if adress length is greater than 2
-		if (target.adress.value.length >= 3) {
-			formErrors.adress = '';
-		} else {
-			formErrors.adress = 'L\'adresse doit contenir plus de trois caractères';
-		}
+				// Check if adress length is greater than 2
+				if (target.adress.value.length >= 3) {
+					formErrors.adress = '';
+				} else {
+					formErrors.adress = 'L\'adresse doit contenir plus de trois caractères';
+				}
 
+				const isValid = this.isFormValid(formErrors);
+				this.setState({
+					formErrors : formErrors,
+					isFormValid : isValid
+				}, () => {
+					if(isValid) {
+						resolve();
+					}
+					else {
+						reject();
+					}
+				});
 
-		this.setState({
-			formErrors : formErrors,
-			isFormValid : this.isFormValid(formErrors)
-		});
+			}
+		);
+
 
 	}
 
@@ -119,12 +109,20 @@ export default class Form extends React.Component {
 				axios.post(paths.api + "/places", place)
 					.then(res => {
 						if(res.status === 201) {
+							console.log('this', this);
+							console.log('this.props', this.props);
+							debugger;
 							this.props.showForm(false);
 							this.props.reRender();
 						}
 					})
 					.catch(error => console.log(error));
 
+
+			} else {
+				const formErrors = this.state.formErrors;
+				formErrors['noResults'] = "Pas d'adresse correspondante";
+				this.forceUpdate();
 
 			}
 		}).catch(error => console.log(error));
@@ -135,7 +133,7 @@ export default class Form extends React.Component {
 
 	render() {
 
-
+		console.log('render Form', this.props, this.props.showForm);
 		return (
 			<form className="form" onSubmit={this.handleSubmit}>
 				{/* Flash Message */}
@@ -168,7 +166,7 @@ export default class Form extends React.Component {
 					/>
 				</div>
 				<button type="submit" className="btnSubmit">
-					Ajouter
+					AJOUTER
 				</button>
 
 			</form>

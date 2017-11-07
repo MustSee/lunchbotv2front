@@ -8,7 +8,8 @@ export default class Marker extends React.Component {
 	}
 
 	handleClick(e) {
-		this.props.onClickPlace(e);
+		this.props.onClickPlace(e.target.innerHTML);
+		this.props.showInfoWindow(true);
 	}
 
 	render() {

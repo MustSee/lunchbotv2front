@@ -6,6 +6,7 @@ import FlashMessage from './components/flashMessage';
 import Form from './components/formulaireTest';
 import InfoWindow from './components/infowindow';
 import Map from './components/map';
+import SearchBar from './components/searchBar';
 
 
 
@@ -15,12 +16,15 @@ class App extends Component {
 		super(props);
 		this.state = {
 			places: [],
-			selectedPlaceIndex: null,
-			showForm: true
+			selectedPlace: null,
+			showForm: false,
+			showInfoWindow : false
 		};
 		this.handleClickOnPlace = this.handleClickOnPlace.bind(this);
 		this.handleShowForm = this.handleShowForm.bind(this);
 		this.handleReRender = this.handleReRender.bind(this);
+		this.showInfoWindow = this.showInfoWindow.bind(this);
+		this.handlePlacesChanged = this.handlePlacesChanged.bind(this);
 	}
 
 	componentDidMount() {
@@ -32,7 +36,7 @@ class App extends Component {
 
 	handleClickOnPlace(res) {
 		this.setState({
-			selectedPlaceIndex: res
+			selectedPlace: res
 		})
 	}
 
@@ -49,25 +53,50 @@ class App extends Component {
 		}));
 	}
 
+	showInfoWindow(res) {
+		this.setState({
+			showForm : res
+		})
+	}
+
+	handlePlacesChanged(places, search) {
+		console.log(places, search);
+		this.setState({
+			showForm: places.length === 0 && search.length > 0
+		})
+	}
+
 	render() {
+
+		if(this.state.showForm) {
+			console.log('render App with form', this.handleShowForm, this.handleReRender);
+		}
+		else {
+			console.log('render App no form');
+		}
+
 
 		return (
 			<div>
 				<div id="map">
 					<Map
 						places={this.state.places}
-						selectedPlaceIndex={this.state.selectedPlaceIndex}
+						selectedPlace={this.state.selectedPlaceIndex}
 						clickOnPlace={this.handleClickOnPlace}
+						showInfoWindow={this.showInfoWindow}
 					/>
 				</div>
 				<div id="search">
+					<SearchBar onPlacesChange={this.handlePlacesChanged}/>
 					{
-						this.state.showForm ? <Form showForm={this.handleShowForm} reRender={this.handleReRender}/> : <FlashMessage/>
+						this.state.showForm ? <Form test="12" showForm={this.handleShowForm} reRender={this.handleReRender}/> : <span></span>
 					}
 					{
-						this.state.selectedPlaceIndex !== null ?
-							<InfoWindow place={this.state.places[this.state.selectedPlaceIndex]}/>
-							: null
+						this.state.showInfoWindow ?
+							this.state.selectedPlace !== null ?
+								<InfoWindow place={this.state.selectedPlace} showInfoWindow={this.showInfoWindow}/>
+								: null
+						: null
 					}
 				</div>
 			</div>

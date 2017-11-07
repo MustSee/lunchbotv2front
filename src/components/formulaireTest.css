@@ -14,3 +14,29 @@ input, button {
     box-sizing: border-box;
 }
 
+.form {
+    margin-top: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 450px;
+    margin-bottom: 50px;
+}
+
+.form div.form-group {
+    width: inherit;
+}
+
+.form div.form-group {
+    margin-bottom: 30px;
+}
+
+.form button {
+    width: 100px;
+    height: 30px;
+    border-radius: 15px;
+    float: right;
+}
+
+.form button:focus {
+    outline : none;
+}
